@@ -66,23 +66,6 @@ def get_cgroup_resources(file):
       ret_val = data.rstrip('\n')
   return ret_val
 
-def get_mem():
-  sysmem = psutil.virtual_memory()
-  mem = int(get_cgroup_resources("/sys/fs/cgroup/memory/memory.limit_in_bytes"))
-  if mem > sysmem.total:
-    return sysmem.total
-  return mem
-
-def get_cpu():
-    cpu_quota = int(get_cgroup_resources("/sys/fs/cgroup/cpu,cpuacct/cpu.cfs_quota_us"))
-    cpu_period = int(get_cgroup_resources("/sys/fs/cgroup/cpu,cpuacct/cpu.cfs_period_us"))
-    if cpu_quota == -1:
-      cpus = get_cgroup_resources("/sys/fs/cgroup/cpuset/cpuset.cpus")
-      cpu = int(cpus.replace("0-","")) + 1
-    else:
-      cpu = int(cpu_quota / cpu_period)
-    return cpu
-
 def read_config_file(filename):
   config = {}
   for i, line in enumerate(open(filename)):
@@ -97,8 +80,8 @@ def read_config_file(filename):
   return config
 
 def get_tuning_values(config, filename):
-  mem = get_mem()
-  cpu = get_cpu()
+  mem = 1024
+  cpu = 4
   values = {}
   for i, line in enumerate(open(filename)):
       line = line.rstrip('\n')
