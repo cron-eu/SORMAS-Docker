@@ -77,7 +77,7 @@ services:
       - SORMAS_POSTGRES_USER=${SORMAS_POSTGRES_USER}
       - TZ=${TZ}
     volumes:
-      - ${SORMAS_PATH}/psqldata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     mem_limit: ${DB_MEM}
@@ -156,3 +156,6 @@ services:
       - CURL_TIMEOUT=30
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  pgdata:
