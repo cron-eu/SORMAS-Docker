@@ -100,7 +100,7 @@ services:
       - SORMAS_POSTGRES_USER=${SORMAS_POSTGRES_USER}
       - TZ=${TZ}
     volumes:
-      - /backup:/var/opt/db_dumps
+      - backup:/var/opt/db_dumps
     cpus: ${DB_DUMP_CPUS}
     mem_limit: ${DB_DUMP_MEM}
     mem_reservation: ${DB_DUMP_MEM_RESERVED}
@@ -159,3 +159,4 @@ services:
 
 volumes:
   pgdata:
+  backup:
