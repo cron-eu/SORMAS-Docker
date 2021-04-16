@@ -122,6 +122,10 @@ services:
     volumes:
       - ./apache2/certs:/usr/local/apache2/certs
       - ${SORMAS_PATH}/apache2_log:/var/log/apache2
+    networks:
+      default:
+        aliases:
+          - ${SORMAS_SERVER_URL}
     ports:
       - 443:443
       - 80:80
