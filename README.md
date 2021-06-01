@@ -21,7 +21,7 @@ cd SORMAS-Docker
 docker-compose pull
 
 # need to rebuild the postgresql container on Mac due to a bugfix:
-docker-compose -f docker-compose-build.yml build postgres
+docker-compose -f docker-compose-build.yml build postgres apache2
 
 # Create a local storage for the data
 mkdir data && chmod 777 data
