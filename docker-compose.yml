@@ -77,7 +77,7 @@ services:
       - SORMAS_POSTGRES_USER=${SORMAS_POSTGRES_USER}
       - TZ=${TZ}
     volumes:
-      - ${SORMAS_PATH}/psqldata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     mem_limit: ${DB_MEM}
@@ -100,7 +100,7 @@ services:
       - SORMAS_POSTGRES_USER=${SORMAS_POSTGRES_USER}
       - TZ=${TZ}
     volumes:
-      - /backup:/var/opt/db_dumps
+      - backup:/var/opt/db_dumps
     cpus: ${DB_DUMP_CPUS}
     mem_limit: ${DB_DUMP_MEM}
     mem_reservation: ${DB_DUMP_MEM_RESERVED}
@@ -122,6 +122,10 @@ services:
     volumes:
       - ./apache2/certs:/usr/local/apache2/certs
       - ${SORMAS_PATH}/apache2_log:/var/log/apache2
+    networks:
+      default:
+        aliases:
+          - ${SORMAS_SERVER_URL}
     ports:
       - 443:443
       - 80:80
@@ -156,3 +160,7 @@ services:
       - CURL_TIMEOUT=30
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  pgdata:
+  backup:

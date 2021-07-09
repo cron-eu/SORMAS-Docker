@@ -10,6 +10,74 @@
 </p>
 <br/>
 
+# cron Build and Setup
+
+This is a fork of https://github.com/hzi-braunschweig/SORMAS-Docker with "bugfixs" to make it work on
+Docker for Mac and docker-machine with VirtualBox:
+
+```
+git clone git@github.com:cron-eu/SORMAS-Docker.git
+cd SORMAS-Docker
+docker-compose pull
+
+# need to rebuild the postgresql container on Mac due to a bugfix:
+docker-compose -f docker-compose-build.yml build postgres
+
+# Create a local storage for the data
+mkdir data && chmod 777 data
+
+# Fire it up!
+docker-compose up -d
+```
+
+## Troubleshooting
+
+In case of something not starting (i.e. postgres container), stop
+and restart again. Follow the logs and scan for errors:
+
+```
+docker-compose up -d postgres && docker-compose logs -f postgres
+```
+
+Restart everything from scratch:
+
+```
+docker-compose down -v
+docker-compose up -d
+```
+
+The "sormas" container takes some time to start, be patient and follow the logs
+(in a separate terminal window):
+
+```
+docker-compose logs -f
+```
+
+Do not mind some casual "Java Exceptions", as long as it continues "doing something".
+
+## Access it
+
+In case it worked out it will at the end start the "apache" proxy, you should have this situation:
+
+```
+% docker-compose ps
+          Name                        Command                       State                            Ports                  
+----------------------------------------------------------------------------------------------------------------------------
+sormas-docker_apache2_1    /tmp/vhost.conf.sh /usr/lo ...   Up (healthy)   0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp
+sormas-docker_autoheal_1   /docker-entrypoint autoheal      Up (healthy)                                                    
+sormas-docker_pg_dump_1    /entrypoint.sh /usr/sbin/c ...   Up                                                              
+sormas-docker_postgres_1   docker-entrypoint.sh -c co ...   Up (healthy)   0.0.0.0:5432->5432/tcp                  
+sormas-docker_sormas_1     /start-server.sh                 Up (healthy)   6048/tcp, 6080/tcp                      
+```
+
+Then you can access it:
+
+https://sormas-docker-test.com
+
+(accept the invalid certificate and have fun).
+
+Login: admin / sadmin
+
 # Docker Images for SORMAS
 
 ---
